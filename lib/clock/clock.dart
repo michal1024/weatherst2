@@ -60,6 +60,6 @@ class Separator extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     var content = Text(show ? ':' : '', style: style);
-    return SizedBox(child: content, width: 5);
+    return SizedBox(child: content, width: 16);
   }  
 }
