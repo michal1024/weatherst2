@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'clock/clock.dart';
+import 'weather/current_weather.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,11 @@ class HomeView extends StatelessWidget {
 class WidgetsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Clock();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+      Clock(),
+      CurrentWeather(),
+    ]);
   }
 }
