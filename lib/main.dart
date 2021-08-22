@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'clock/clock.dart';
 import 'weather/current_weather.dart';
-
+import 'weather/weather_provider.dart';
 void main() {
   runApp(MyApp());
 }
@@ -35,11 +36,16 @@ class HomeView extends StatelessWidget {
 class WidgetsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-      Clock(),
-      CurrentWeather(),
-    ]);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Weather())
+      ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Clock(),
+          CurrentWeather(),
+        ])
+    );
   }
 }

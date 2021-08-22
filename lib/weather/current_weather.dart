@@ -1,39 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'weather_provider.dart';
 
-//https://developer.yr.no/doc/
-//49.97153, 20.15229
-//https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=49.97&lon=20.15
-
-class CurrentWeather extends StatefulWidget {
-  @override
-  State createState() => _CurrentWeatherState();
-}
-
-class _CurrentWeatherState extends State<CurrentWeather> {
-  double temp = 0;
-
-  void updateTime(dynamic data) {
-    setState(() {
-      temp = data['properties']['timeseries'][0]['data']['instant']['details']['air_temperature'];
-    });
-  }
-
-  @override
-  void initState() {
-    setState(() {
-      http.get(Uri.parse('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=49.97&lon=20.15'),
-        headers: {'User-Agent': 'hobby project/0 michal1024@gmail.com'})
-        .then((response) => jsonDecode(response.body))
-        .then(updateTime);
-    });
-    super.initState();
-  }
-
+class CurrentWeather extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return Text('$temp℃', style: TextStyle(fontSize: 128),);
+    return Consumer<Weather>(
+      builder: (context, weather, child) => Column(children: [
+        Text('${weather.forecast?.properties.timeseries[0].data.instant.details?.air_temperature}℃', style: TextStyle(fontSize: 128)),
+        Text('Lat: ${weather.forecast?.geometry.coordinates[0]}, Lon: ${weather.forecast?.geometry.coordinates[1]}, Alt: ${weather.forecast?.geometry.coordinates[2]}'),]
+      )
+    );
   }
 }
