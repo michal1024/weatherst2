@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Clock extends StatefulWidget {
   @override
@@ -21,7 +22,10 @@ class _ClockState extends State<Clock> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Center(child: ClockFace(time: _time));
+    return Column(children: [
+      ClockFace(time: _time),
+      Date(date: _time)],
+      mainAxisAlignment: MainAxisAlignment.center,);
   }
 }
 
@@ -41,7 +45,7 @@ class ClockFace extends StatelessWidget {
   }
 }
 
-final style = TextStyle(fontSize: 64);
+final style = TextStyle(fontSize: 128);
 
 class Digit extends StatelessWidget {
   final int value;
@@ -60,6 +64,17 @@ class Separator extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     var content = Text(show ? ':' : '', style: style);
-    return SizedBox(child: content, width: 16);
+    return SizedBox(child: content, width: 32);
   }  
+}
+
+class Date extends StatelessWidget {
+  final DateTime date;
+  Date({required this.date});
+
+  @override
+  Widget build(BuildContext ctx) {
+    var dateString = DateFormat.yMMMMd().format(date);
+    return Text('$dateString');
+  }
 }

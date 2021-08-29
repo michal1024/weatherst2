@@ -42,9 +42,10 @@ class WidgetsView extends StatelessWidget {
       ],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Clock(),
-          CurrentWeather(),
+          Expanded(child: Clock()),
+          Expanded(child: CurrentWeather()),
         ])
     );
   }
