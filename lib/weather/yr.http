@@ -1,0 +1,12 @@
+#https://developer.yr.no/doc/
+#https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=49.97&lon=20.15
+@lat=49.97153
+@lon=20.15229
+
+###
+GET https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={{lat}}&lon={{lon}}
+User-Agent: hobby project/0 michal1024@gmail.com
+
+###
+GET https://api.met.no/weatherapi/locationforecast/2.0/complete?lat={{lat}}&lon={{lon}}
+User-Agent: hobby project/0 michal1024@gmail.com
