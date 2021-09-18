@@ -6,63 +6,44 @@ import 'package:flutter/material.dart';
 import 'weather_provider.dart';
 import 'model/location_forecast.dart';
 
-class CurrentWeather extends StatelessWidget {
-  final _detailStyle = TextStyle(fontSize: 24);
+class Style {
+  static const summary = TextStyle(fontSize: 72);
+  static const detail = TextStyle(fontSize: 24);
+}
 
+class CurrentWeather extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => Consumer<Weather>(builder: _builder);
 
   Widget _builder(BuildContext ctx, Weather weather, Widget? child) {
-    /*TODO:
-    change .now and .next to .at(Datetime)
-    return new DataEntry that combines parameters from now.instant and summary from next.summary
-    */
-    var now = weather.now;
-    return now == null
+    var weatherData = weather.at(DateTime.now())?.data;
+    return weatherData == null
         ? Text('No data')
         : Column(
-            children: [CurrentCondition(now: now, next:weather.next), 
-            conditions(now, weather.next)],
+            children: [
+              WeatherSummary(weatherData: weatherData),
+              WeatherDetails(weatherData: weatherData)
+            ],
             mainAxisAlignment: MainAxisAlignment.center,
           );
   }
-
-  Widget conditions(DataEntry now, DataEntry? next) => Row(
-        children: <Widget>[
-          windSpeedDir(now),
-          humidity(now),
-          pressure(now),
-        ],
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      );
-
-  Widget windSpeedDir(DataEntry now) => Row(children: [
-        Arrow(direction: now.details?.wind_from_direction ?? 0),
-        Text('${now.details?.wind_speed} m/s', style: _detailStyle),
-      ]);
-
-  Widget humidity(DataEntry now) =>
-      Text('${now.details?.relative_humidity} %', style: _detailStyle);
-
-  Widget pressure(DataEntry now) =>
-      Text('${now.details?.air_pressure_at_sea_level} hPa',
-          style: _detailStyle);
 }
 
-class CurrentCondition extends StatelessWidget {
-  final DataEntry now;
-  final DataEntry? next;
-  CurrentCondition({required this.now, this.next});
+class WeatherSummary extends StatelessWidget {
+  final Data weatherData;
+  WeatherSummary({required this.weatherData});
 
   @override
   Widget build(BuildContext ctx) {
-    String temp = now.details?.air_temperature?.toString() ?? '';
-    String symbol = next?.summary?.symbol_code ?? 'clearsky_day';
+    String temp =
+        weatherData.instant.details?.air_temperature?.toString() ?? '';
+    String symbol = weatherData.next.summary?.symbol_code ?? 'clearsky_day';
     return Row(
-        children: [
-          Text('$temp℃', style: TextStyle(fontSize: 72)), 
-          Image(image: AssetImage('images/weathericon/$symbol.png'))],
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text('$temp℃', style: Style.summary),
+        Image(image: AssetImage('images/weathericon/$symbol.png'))
+      ],
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     );
   }
 }
@@ -77,4 +58,38 @@ class Arrow extends StatelessWidget {
     return Transform.rotate(
         angle: rads, child: Icon(Icons.arrow_downward_rounded));
   }
+}
+
+class WeatherDetails extends StatelessWidget {
+  final Data weatherData;
+
+  WeatherDetails({required this.weatherData});
+
+  @override
+  Widget build(BuildContext ctx) {
+    var details = weatherData.instant.details;
+    return Row(
+      children: <Widget>[
+        _WindDetails(
+            direction: details?.wind_from_direction ?? 0,
+            speed: details?.wind_speed ?? 0),
+        Text('${details?.relative_humidity} %', style: Style.detail),
+        Text('${details?.air_pressure_at_sea_level} hPa', style: Style.detail)
+      ],
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    );
+  }
+}
+
+class _WindDetails extends StatelessWidget {
+  final double direction;
+  final double speed;
+
+  _WindDetails({required this.direction, required this.speed});
+
+  @override
+  Widget build(BuildContext ctx) => Row(children: [
+        Arrow(direction: direction),
+        Text('$speed m/s', style: Style.detail),
+      ]);
 }

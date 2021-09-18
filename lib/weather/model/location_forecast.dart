@@ -125,6 +125,9 @@ class Data {
       this.next_6_hours});
   factory Data.fromJson(Json json) => _$DataFromJson(json);
   Json toJson() => _$DataToJson(this);
+
+  DataEntry get next =>
+      next_1_hours ?? next_6_hours ?? next_12_hours ?? instant;
 }
 
 @JsonSerializable(explicitToJson: true)
