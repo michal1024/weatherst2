@@ -22,6 +22,7 @@ class CurrentWeather extends StatelessWidget {
         : Column(
             children: [
               WeatherSummary(weatherData: weatherData),
+              SizedBox(height: 24,),
               WeatherDetails(weatherData: weatherData)
             ],
             mainAxisAlignment: MainAxisAlignment.center,

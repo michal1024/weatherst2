@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weatherst2/weather/forecast.dart';
 import 'clock/clock.dart';
 import 'weather/current_weather.dart';
+import 'weather/forecast.dart';
 import 'weather/weather_provider.dart';
 void main() {
   runApp(MyApp());
@@ -40,13 +42,22 @@ class WidgetsView extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Weather())
       ],
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.max,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Expanded(child: Clock()),
-          Expanded(child: CurrentWeather()),
-        ])
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(child: Clock()),
+            Expanded(child: CurrentWeather()),
+          ]),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //mainAxisSize: MainAxisSize.max,
+          children: [Forecast()],
+        )]
+      )
     );
   }
 }
