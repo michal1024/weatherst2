@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'weather_provider.dart';
+import 'weather_images.dart';
 import 'model/location_forecast.dart';
 
 class Style {
@@ -16,14 +17,14 @@ class CurrentWeather extends StatelessWidget {
   Widget build(BuildContext ctx) => Consumer<Weather>(builder: _builder);
 
   Widget _builder(BuildContext ctx, Weather weather, Widget? child) {
-    var weatherData = weather.at(DateTime.now())?.data;
-    return weatherData == null
+    var currentWeather = weather.at(DateTime.now());
+    return currentWeather == null
         ? Text('No data')
         : Column(
             children: [
-              WeatherSummary(weatherData: weatherData),
-              SizedBox(height: 24,),
-              WeatherDetails(weatherData: weatherData)
+              WeatherSummary(weather: currentWeather),
+              SizedBox(height: 16,),
+              WeatherDetails(weather: currentWeather)
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           );
@@ -31,18 +32,17 @@ class CurrentWeather extends StatelessWidget {
 }
 
 class WeatherSummary extends StatelessWidget {
-  final Data weatherData;
-  WeatherSummary({required this.weatherData});
+  final Forecast weather;
+  WeatherSummary({required this.weather});
 
   @override
   Widget build(BuildContext ctx) {
     String temp =
-        weatherData.instant.details?.air_temperature?.toString() ?? '';
-    String symbol = weatherData.next.summary?.symbol_code ?? 'clearsky_day';
+        weather.data.instant.details?.air_temperature?.toString() ?? '';
     return Row(
       children: [
         Text('$temp℃', style: Style.summary),
-        Image(image: AssetImage('images/weathericon/$symbol.png'))
+        Image.asset(WeatherImages.forecastImage(weather))
       ],
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     );
@@ -62,13 +62,13 @@ class Arrow extends StatelessWidget {
 }
 
 class WeatherDetails extends StatelessWidget {
-  final Data weatherData;
+  final Forecast weather;
 
-  WeatherDetails({required this.weatherData});
+  WeatherDetails({required this.weather});
 
   @override
   Widget build(BuildContext ctx) {
-    var details = weatherData.instant.details;
+    var details = weather.data.instant.details;
     return Row(
       children: <Widget>[
         _WindDetails(

@@ -24,7 +24,7 @@ class Weather extends ChangeNotifier {
   }
 
 
-  Timeseries? at(DateTime dt) {
+  Forecast? at(DateTime dt) {
     if (_forecast == null) {
       return null;
     }
@@ -32,7 +32,7 @@ class Weather extends ChangeNotifier {
     if (timeseries.length < 1) {
       return null;
     }
-    Timeseries closest = timeseries[0];
+    Forecast closest = timeseries[0];
     Duration closestDistance = dt.difference(closest.time).abs();
     for (var ts in timeseries) {
       var distance = ts.time.difference(dt).abs();

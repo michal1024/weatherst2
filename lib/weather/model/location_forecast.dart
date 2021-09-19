@@ -112,6 +112,8 @@ class Timeseries {
   Json toJson() => _$TimeseriesToJson(this);
 }
 
+typedef Forecast = Timeseries;
+
 @JsonSerializable(explicitToJson: true)
 class Data {
   DataEntry instant;

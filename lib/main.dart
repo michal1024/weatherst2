@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherst2/weather/forecast.dart';
+import 'package:weatherst2/weather/weather_forecast.dart';
 import 'clock/clock.dart';
 import 'weather/current_weather.dart';
-import 'weather/forecast.dart';
+import 'weather/weather_forecast.dart';
 import 'weather/weather_provider.dart';
 void main() {
   runApp(MyApp());
@@ -55,7 +55,7 @@ class WidgetsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           //mainAxisSize: MainAxisSize.max,
-          children: [Forecast()],
+          children: [WeatherForecast()],
         )]
       )
     );
