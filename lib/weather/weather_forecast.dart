@@ -28,10 +28,10 @@ class DayForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var night = weather.at(date.addHours(4));
-    var morning = weather.at(date.addHours(8));
-    var afternoon = weather.at(date.addHours(14));
-    var evening = weather.at(date.addHours(20));
+    var night = weather.forecast?.at(date.addHours(4));
+    var morning = weather.forecast?.at(date.addHours(8));
+    var afternoon = weather.forecast?.at(date.addHours(14));
+    var evening = weather.forecast?.at(date.addHours(20));
 
     var nightTemp = night?.data.instant.details?.air_temperature ?? 0;
     var dayTemp = afternoon?.data.instant.details?.air_temperature ?? 0;

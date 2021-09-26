@@ -17,7 +17,7 @@ class CurrentWeather extends StatelessWidget {
   Widget build(BuildContext ctx) => Consumer<Weather>(builder: _builder);
 
   Widget _builder(BuildContext ctx, Weather weather, Widget? child) {
-    var currentWeather = weather.at(DateTime.now());
+    var currentWeather = weather.forecast?.at(DateTime.now());
     return currentWeather == null
         ? Text('No data')
         : Column(

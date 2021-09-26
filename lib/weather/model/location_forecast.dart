@@ -7,16 +7,6 @@ typedef Json = Map<String, dynamic>;
 //https://developer.yr.no/doc/ForecastJSON/
 
 @JsonSerializable(explicitToJson: true)
-class Geometry {
-  Geometry({required this.coordinates, required this.type});
-  final List<double> coordinates;
-  final String type;
-
-  factory Geometry.fromJson(Json json) => _$GeometryFromJson(json);
-  Json toJson() => _$GeometryToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
 class LocationForecast {
   String type;
   Geometry geometry;
@@ -28,6 +18,33 @@ class LocationForecast {
       _$LocationForecastFromJson(json);
 
   Json toJson() => _$LocationForecastToJson(this);
+
+  Forecast? at(DateTime dt) {
+    var timeseries = properties.timeseries;
+    if (timeseries.length < 1) {
+      return null;
+    }
+    Forecast closest = timeseries[0];
+    Duration closestDistance = dt.difference(closest.time).abs();
+    for (var ts in timeseries) {
+      var distance = ts.time.difference(dt).abs();
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = ts;
+      }
+    }
+    return closest;
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class Geometry {
+  Geometry({required this.coordinates, required this.type});
+  final List<double> coordinates;
+  final String type;
+
+  factory Geometry.fromJson(Json json) => _$GeometryFromJson(json);
+  Json toJson() => _$GeometryToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -36,7 +53,7 @@ class Properties {
   final List<Timeseries> timeseries;
 
   Properties({required this.meta, required this.timeseries});
-  
+
   factory Properties.fromJson(Json json) => _$PropertiesFromJson(json);
   Json toJson() => _$PropertiesToJson(this);
 }
@@ -45,7 +62,7 @@ class Properties {
 class Meta {
   final DateTime updated_at;
   final Units units;
-  
+
   Meta({required this.updated_at, required this.units});
 
   factory Meta.fromJson(Json json) => _$MetaFromJson(json);

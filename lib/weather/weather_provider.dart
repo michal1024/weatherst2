@@ -53,25 +53,4 @@ class Weather extends ChangeNotifier {
       
     }
   }
-
-  Forecast? at(DateTime dt) {
-    if (_forecast == null) {
-      return null;
-    }
-    var timeseries = _forecast!.properties.timeseries;
-    if (timeseries.length < 1) {
-      return null;
-    }
-    Forecast closest = timeseries[0];
-    Duration closestDistance = dt.difference(closest.time).abs();
-    for (var ts in timeseries) {
-      var distance = ts.time.difference(dt).abs();
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closest = ts;
-      }
-    }
-    return closest;
-  }
-
 }
