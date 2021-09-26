@@ -5,6 +5,7 @@ import 'clock/clock.dart';
 import 'weather/current_weather.dart';
 import 'weather/weather_forecast.dart';
 import 'weather/weather_provider.dart';
+import 'network/network_stats.dart';
 void main() {
   runApp(MyApp());
 }
@@ -54,8 +55,10 @@ class WidgetsView extends StatelessWidget {
           ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //mainAxisSize: MainAxisSize.max,
-          children: [WeatherForecast()],
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            SizedBox(child: NetworkStats(), width: 500, height: 200),
+            WeatherForecast()]
         )]
       )
     );

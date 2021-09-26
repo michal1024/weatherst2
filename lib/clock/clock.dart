@@ -74,7 +74,7 @@ class Date extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    var dateString = DateFormat.yMMMMd().format(date);
+    var dateString = DateFormat.yMMMMEEEEd().format(date);
     return Text('$dateString');
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'weather_provider.dart';
 import 'weather_images.dart';
 import 'date_util.dart';
@@ -33,17 +34,18 @@ class DayForecast extends StatelessWidget {
     var afternoon = weather.forecast?.at(date.addHours(14));
     var evening = weather.forecast?.at(date.addHours(20));
 
-    var nightTemp = night?.data.instant.details?.air_temperature ?? 0;
-    var dayTemp = afternoon?.data.instant.details?.air_temperature ?? 0;
+    var nightTemp = night?.data.instant.details?.air_temperature?.round() ?? 0;
+    var dayTemp = afternoon?.data.instant.details?.air_temperature?.round() ?? 0;
     
+    var weekday = DateFormat('E').format(date);
     return Row(
       children: [
-        SizedBox(width: 60, child: Text("${date.day}/${date.month}", style: _style,)),
+        SizedBox(width: 60, child: Text("$weekday", style: _style,)),
         _getImage(morning),
         _getImage(afternoon),
         _getImage(evening),
         SizedBox(width: 24),
-        Text("$nightTemp℃ / $dayTemp℃", style: _style)
+        Text("$dayTemp℃ ($nightTemp℃)", style: _style)
       ],
     );
   }
