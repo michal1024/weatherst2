@@ -1,7 +1,0 @@
-widgets:
-  weather:
-    lat: $WST2_LAT
-    lon: $WST2_LON
-    user_agent: $WST2_USER_AGENT
-  network:
-    api_key: $WST2_API
