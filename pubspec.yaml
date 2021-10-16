@@ -29,7 +29,7 @@ dependencies:
   intl: ^0.17.0
   logger: ^1.1.0
   fl_chart: ^0.40.0
-  flutter_dotenv: ^5.0.2
+  yaml: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +52,6 @@ flutter:
   assets:
     - images/weathericon/
     - config.yaml
-    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

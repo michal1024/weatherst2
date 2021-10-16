@@ -1,0 +1,7 @@
+widgets:
+  weather:
+    lat: 0.00
+    lon: 0.00
+    user_agent: Put your user agent here
+  network:
+    api_key: InfluxDB api key
