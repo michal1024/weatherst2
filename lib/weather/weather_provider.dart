@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 import 'model/location_forecast.dart';
+import 'package:weatherst2/app_config.dart';
 
 class Weather extends ChangeNotifier {
+  AppConfig _config;
   LocationForecast? _forecast;
   LocationForecast? get forecast => _forecast;
   Timer? _timer;
@@ -14,9 +16,10 @@ class Weather extends ChangeNotifier {
   DateTime _lastFetch = DateTime.fromMillisecondsSinceEpoch(0);
   Logger _logger = Logger();
   
-  Weather() {
+  Weather(AppConfig config) : _config=config {
     Timer.run(_fetchForecast);
-    _timer = Timer.periodic(Duration(hours: 1), (_) => _fetchForecast());
+    var interval = Duration(seconds: _config.widgets.weather.fetchInterval);
+    _timer = Timer.periodic(interval, (_) => _fetchForecast());
   }
   
   @override
@@ -34,11 +37,13 @@ class Weather extends ChangeNotifier {
       return;
     }
     try {
+      var lat = _config.widgets.weather.lat;
+      var lon = _config.widgets.weather.lon;
       http.get(
           Uri.parse(
-              'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=49.97&lon=20.15'),
+              'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$lat&lon=$lon'),
           headers: {
-            'User-Agent': 'hobby project/0 michal1024@gmail.com',
+            'User-Agent': _config.widgets.weather.userAgent,
             'If-Modified-Since': HttpDate.format(_lastFetch)
           }).then(_processResponse);
     } catch (e) {

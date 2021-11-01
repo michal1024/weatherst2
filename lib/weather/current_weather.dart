@@ -13,6 +13,7 @@ class Style {
 }
 
 class CurrentWeather extends StatelessWidget {
+
   @override
   Widget build(BuildContext ctx) => Consumer<Weather>(builder: _builder);
 

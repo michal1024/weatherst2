@@ -5,13 +5,23 @@ import 'package:weatherst2/weather/weather_forecast.dart';
 import 'package:weatherst2/clock/clock.dart';
 import 'package:weatherst2/weather/current_weather.dart';
 import 'package:weatherst2/weather/weather_provider.dart';
-import 'package:weatherst2/network/network_stats.dart';
+//import 'package:weatherst2/network/network_stats.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'app_config.dart' show AppConfig;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var config = await loadConfig();
+  await windowManager.ensureInitialized();
+  windowManager.waitUntilReadyToShow().then((_) async {
+    if (!config.app.debug) {
+      await windowManager.setAsFrameless();
+      await windowManager.setSize(Size(800, 480));
+      await windowManager.setPosition(Offset.zero);
+    }
+    windowManager.show();
+  });
   runApp(MyApp(config));
 }
 
@@ -53,7 +63,8 @@ class WidgetsView extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProxyProvider<AppConfig, Weather>(
-              create: (_) => Weather(), update: (_, config, __) => Weather())
+              create: (_) => Weather(Provider.of<AppConfig>(context, listen: false)), 
+              update: (_, config, __) => Weather(config))
         ],
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -68,7 +79,7 @@ class WidgetsView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(child: NetworkStats(), width: 500, height: 200),
+                //SizedBox(child: NetworkStats(), width: 500, height: 200),
                 WeatherForecast()
               ])
         ]));
